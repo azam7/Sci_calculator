@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2f5ce8">
+<meta name="description" content="NovaCalc — an offline professional mathematics workstation: calculator, CAS, graphing, matrices, statistics and numerical methods.">
+<meta name="author" content="Mohammad Azam — moboapps">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>NovaCalc — Mathematics Workstation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="shell">
+
+  <!-- Desktop rail navigation -->
+  <nav class="rail" id="rail" aria-label="Sections">
+    <div class="rail-mark">NC</div>
+    <button class="active" data-tab="calc" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2.2"/><rect x="7.5" y="4.6" width="9" height="4.4" rx="0.8"/><circle cx="8.3" cy="13" r=".9" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r=".9" fill="currentColor" stroke="none"/><circle cx="15.7" cy="13" r=".9" fill="currentColor" stroke="none"/><circle cx="8.3" cy="17" r=".9" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r=".9" fill="currentColor" stroke="none"/><circle cx="15.7" cy="17" r=".9" fill="currentColor" stroke="none"/></svg>
+      <span>Calc</span>
+    </button>
+    <button data-tab="cas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 5H7l6 7-6 7h10"/></svg>
+      <span>CAS</span>
+    </button>
+    <button data-tab="graph">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M6.5 15.5 10 11l3 2.6 4.5-6.1"/></svg>
+      <span>Graph</span>
+    </button>
+    <button data-tab="matrix">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1.6"/><path d="M4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16"/></svg>
+      <span>Matrix</span>
+    </button>
+    <button data-tab="stats">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10M12 20V4M19 20v-7"/><path d="M3 20h18"/></svg>
+      <span>Stats</span>
+    </button>
+    <button data-tab="tools">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a3.5 3.5 0 0 1-4.6 4.6L5 16l3 3 5.1-5.1a3.5 3.5 0 0 1 4.6-4.6l-2.3 2.3-2-2 2.3-2.3z"/></svg>
+      <span>Tools</span>
+    </button>
+    <button data-tab="advanced">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>
+      <span>Pro</span>
+    </button>
+    <button data-tab="lab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5.2 8.6a1.8 1.8 0 0 0 1.6 2.7h11.2a1.8 1.8 0 0 0 1.6-2.7L14 9V3"/><path d="M7.5 15h9"/></svg>
+      <span>Lab</span>
+    </button>
+    <button class="rail-theme" id="themeBtn" aria-label="Toggle theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+    </button>
+  </nav>
+
+  <div class="main-col">
+    <header class="topbar">
+      <div class="brand"><b>NovaCalc</b><small>Offline mathematics workstation · V6</small></div>
+      <div class="topbar-actions">
+        <span class="chip" id="angleChip">DEG</span>
+      </div>
+    </header>
+
+    <!-- Mobile tab bar -->
+    <nav class="tabbar" id="tabbar" aria-label="Sections">
+      <button class="active" data-tab="calc" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2.2"/><rect x="7.5" y="4.6" width="9" height="4.4" rx="0.8"/><circle cx="8.3" cy="13" r=".9" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r=".9" fill="currentColor" stroke="none"/><circle cx="15.7" cy="13" r=".9" fill="currentColor" stroke="none"/></svg>
+        <span>Calc</span>
+      </button>
+      <button data-tab="cas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 5H7l6 7-6 7h10"/></svg>
+        <span>CAS</span>
+      </button>
+      <button data-tab="graph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M6.5 15.5 10 11l3 2.6 4.5-6.1"/></svg>
+        <span>Graph</span>
+      </button>
+      <button data-tab="matrix">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1.6"/><path d="M4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16"/></svg>
+        <span>Matrix</span>
+      </button>
+      <button data-tab="stats">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V10M12 20V4M19 20v-7"/><path d="M3 20h18"/></svg>
+        <span>Stats</span>
+      </button>
+      <button data-tab="tools">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a3.5 3.5 0 0 1-4.6 4.6L5 16l3 3 5.1-5.1a3.5 3.5 0 0 1 4.6-4.6l-2.3 2.3-2-2 2.3-2.3z"/></svg>
+        <span>Tools</span>
+      </button>
+      <button data-tab="advanced">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>
+        <span>Pro</span>
+      </button>
+      <button data-tab="lab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5.2 8.6a1.8 1.8 0 0 0 1.6 2.7h11.2a1.8 1.8 0 0 0 1.6-2.7L14 9V3"/><path d="M7.5 15h9"/></svg>
+        <span>Lab</span>
+      </button>
+      <button id="themeBtnMobile" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+        <span>Theme</span>
+      </button>
+    </nav>
+
+    <main>
+
+    <section id="calc" class="panel active">
+      <div class="display card">
+        <div class="display-meta"><span id="angle">DEG</span><span id="mem">M</span></div>
+        <input id="expr" autocomplete="off" spellcheck="false" placeholder="Enter an expression…" aria-label="Expression">
+        <div id="result" aria-live="polite">0</div>
+      </div>
+      <div class="modes">
+        <button class="mode active" data-angle="DEG">DEG</button><button class="mode" data-angle="RAD">RAD</button><button class="mode" data-angle="GRAD">GRAD</button>
+        <button id="ans" class="ghost">Ans</button>
+      </div>
+      <div class="keypad">
+        <button class="danger" data-act="clear">AC</button><button class="fn" data-act="back">⌫</button><button class="op" data-in="(">(</button><button class="op" data-in=")">)</button><button class="op" data-in="/100">%</button>
+        <button class="fn" data-in="sin(">sin</button><button class="fn" data-in="cos(">cos</button><button class="fn" data-in="tan(">tan</button><button class="fn" data-in="ln(">ln</button><button class="fn" data-in="log(">log</button>
+        <button class="fn" data-in="asin(">sin⁻¹</button><button class="fn" data-in="acos(">cos⁻¹</button><button class="fn" data-in="atan(">tan⁻¹</button><button class="fn" data-in="sqrt(">√</button><button class="op" data-in="^">xʸ</button>
+        <button class="fn" data-in="π">π</button><button class="fn" data-in="e">e</button><button class="op" data-in="!">x!</button><button class="fn" data-in="abs(">abs</button><button class="op" data-in="mod">mod</button>
+        <button data-in="7">7</button><button data-in="8">8</button><button data-in="9">9</button><button class="op" data-in="/">÷</button><button class="fn" data-act="memory">M+</button>
+        <button data-in="4">4</button><button data-in="5">5</button><button data-in="6">6</button><button class="op" data-in="*">×</button><button class="fn" data-act="memoryMinus">M−</button>
+        <button data-in="1">1</button><button data-in="2">2</button><button data-in="3">3</button><button class="op" data-in="-">−</button><button class="fn" data-act="memoryRecall">MR</button>
+        <button data-in="0">0</button><button data-in=".">.</button><button data-in="," class="soft">,</button><button class="op" data-in="+">+</button><button class="equals" data-act="equals">=</button>
+      </div>
+      <div class="card history"><div class="section-title">History <button id="clearHistory" class="tiny ghost">Clear</button></div><div id="historyList"></div></div>
+    </section>
+
+    <section id="cas" class="panel">
+      <div class="hero card"><h2>CAS Studio</h2><p>Offline numerical &amp; symbolic-style mathematics.</p></div>
+      <div class="card form">
+        <h3>Expression / equation</h3>
+        <label for="casExpr">Expression</label>
+        <input id="casExpr" placeholder="e.g. x^3 - 2*x - 5">
+        <div class="form-row">
+          <div><label for="casVar">Variable</label><input id="casVar" value="x"></div>
+          <div><label for="casPoint">Point (a) — for Limit / Taylor</label><input id="casPoint" type="number" value="0"></div>
+        </div>
+        <div class="grid2">
+          <button class="primary" id="derive">d/dx Derivative</button>
+          <button class="primary" id="integrate">∫ Integrate</button>
+          <button id="limit">Limit at a</button><button id="taylor">Taylor at a</button>
+          <button id="roots">Polynomial Roots</button><button id="factor">Prime Factor</button>
+        </div>
+        <div id="casOut" class="output muted">Ready.</div>
+      </div>
+      <div class="card form">
+        <h3>Simultaneous equations</h3>
+        <div class="form-row">
+          <div><label for="eq1">Equation 1</label><input id="eq1" placeholder="2x + 3y = 13"></div>
+          <div><label for="eq2">Equation 2</label><input id="eq2" placeholder="x - y = 1"></div>
+        </div>
+        <button class="primary" id="solve2">Solve x, y</button>
+        <div id="eqOut" class="output muted"></div>
+      </div>
+    </section>
+
+    <section id="graph" class="panel">
+      <div class="card form">
+        <h2>Graph Studio</h2>
+        <div class="form-row">
+          <div><label for="f1">f(x)</label><input id="f1" value="sin(x)" placeholder="f(x)"></div>
+          <div><label for="f2">g(x) — optional</label><input id="f2" placeholder="optional second function"></div>
+        </div>
+        <div class="range"><label>X min <input id="xmin" type="number" value="-10"></label><label>X max <input id="xmax" type="number" value="10"></label></div>
+        <div class="grid2"><button class="primary" id="plot">Plot</button><button class="ghost" id="resetGraph">Reset</button></div>
+        <canvas id="graphCanvas" role="img" aria-label="Function plot"></canvas>
+      </div>
+    </section>
+
+    <section id="matrix" class="panel">
+      <div class="card form">
+        <h2>Matrix Lab</h2>
+        <label for="msize">Size</label>
+        <select id="msize"><option value="2">2 × 2</option><option value="3">3 × 3</option><option value="4">4 × 4</option></select>
+        <div id="matrixGrid" class="matrix"></div>
+        <div class="grid2"><button id="det">det(A)</button><button id="inverse">A⁻¹</button><button id="transpose">Aᵀ</button><button id="trace">trace(A)</button></div>
+        <div id="matrixOut" class="output muted"></div>
+      </div>
+    </section>
+
+    <section id="stats" class="panel">
+      <div class="card form">
+        <h2>Statistics</h2>
+        <label for="data">Data (comma or space separated)</label>
+        <textarea id="data" placeholder="12, 15, 17, 18, 21, 25"></textarea>
+        <button class="primary" id="statsCalc">Analyze</button>
+        <div id="statsOut" class="output muted"></div>
+      </div>
+      <div class="card form">
+        <h3>Linear regression — y = ax + b</h3>
+        <div class="form-row">
+          <div><label for="xs">x values</label><input id="xs" placeholder="1, 2, 3, 4"></div>
+          <div><label for="ys">y values</label><input id="ys" placeholder="2, 4, 5, 8"></div>
+        </div>
+        <button class="primary" id="regress">Fit line</button>
+        <div id="regOut" class="output muted"></div>
+      </div>
+    </section>
+
+    <section id="tools" class="panel">
+      <div class="card form">
+        <h2>Toolbox</h2>
+
+        <div class="tool-card">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 9h6v6H9z"/></svg>GCD &amp; LCM</h4>
+          <div class="form-row">
+            <div><label for="gcdA">First integer</label><input id="gcdA" type="number" value="24"></div>
+            <div><label for="gcdB">Second integer</label><input id="gcdB" type="number" value="36"></div>
+          </div>
+          <button class="primary" id="gcdBtn">Calculate</button>
+          <div id="gcdOut" class="output muted"></div>
+        </div>
+
+        <div class="tool-card">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h10"/></svg>Permutations &amp; Combinations</h4>
+          <div class="form-row">
+            <div><label for="combN">n</label><input id="combN" type="number" value="10"></div>
+            <div><label for="combR">r</label><input id="combR" type="number" value="3"></div>
+          </div>
+          <button class="primary" id="combBtn">Calculate nPr / nCr</button>
+          <div id="combOut" class="output muted"></div>
+        </div>
+
+        <div class="tool-card">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 19 19 5M7 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></svg>Percentage</h4>
+          <div class="form-row">
+            <div><label for="pctValue">Value</label><input id="pctValue" type="number" value="250"></div>
+            <div><label for="pctPercent">Percent</label><input id="pctPercent" type="number" value="15"></div>
+          </div>
+          <button class="primary" id="pctBtn">Calculate</button>
+          <div id="pctOut" class="output muted"></div>
+        </div>
+
+        <div class="tool-card">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 6v6h6"/></svg>Compound Interest</h4>
+          <div class="form-row">
+            <div><label for="ciPrincipal">Principal</label><input id="ciPrincipal" type="number" value="100000"></div>
+            <div><label for="ciRate">Annual rate %</label><input id="ciRate" type="number" value="10"></div>
+          </div>
+          <div class="form-row">
+            <div><label for="ciYears">Years</label><input id="ciYears" type="number" value="5"></div>
+            <div><label for="ciCompounds">Compounds / year</label><input id="ciCompounds" type="number" value="12"></div>
+          </div>
+          <button class="primary" id="ciBtn">Calculate future value</button>
+          <div id="ciOut" class="output muted"></div>
+        </div>
+
+        <div class="tool-card">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 17c3-8 6-11 8-11s5 3 8 11"/></svg>Quadratic Solver</h4>
+          <div class="form-row">
+            <div><label for="quadA">a</label><input id="quadA" type="number" value="1"></div>
+            <div><label for="quadB">b</label><input id="quadB" type="number" value="-5"></div>
+          </div>
+          <label for="quadC">c</label><input id="quadC" type="number" value="6">
+          <button class="primary" id="quadBtn">Solve</button>
+          <div id="quadOut" class="output muted"></div>
+        </div>
+
+        <div class="tool-card">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Physics Constants</h4>
+          <button class="primary" id="physBtn">Show constants</button>
+          <div id="physOut" class="output muted"></div>
+        </div>
+      </div>
+
+      <div class="card form">
+        <h3>Math Notebook</h3>
+        <label for="note">Note</label>
+        <textarea id="note" placeholder="Write formulas, results, ideas…"></textarea>
+        <button class="primary" id="saveNote">Save Note</button>
+        <div id="notes"></div>
+      </div>
+    </section>
+
+    <section id="advanced" class="panel">
+      <div class="hero card"><h2>Pro Mathematics</h2><p>Exact arithmetic, polynomial tools, eigen analysis and 3D plotting.</p></div>
+
+      <div class="card form">
+        <h3>Exact Fractions &amp; Surds</h3>
+        <div class="form-row"><input id="fracA" placeholder="22/7"><input id="fracB" placeholder="1/3"></div>
+        <div class="grid2"><button id="fracAdd">A + B</button><button id="fracMul">A × B</button><button id="fracSub">A − B</button><button id="fracDiv">A ÷ B</button></div>
+        <div id="fracOut" class="output muted"></div>
+      </div>
+
+      <div class="card form">
+        <h3>Polynomial Workbench</h3>
+        <label for="poly">Polynomial</label>
+        <input id="poly" placeholder="x^3 - 6*x^2 + 11*x - 6">
+        <label for="polyX">Evaluate at x</label>
+        <input id="polyX" type="number" value="2">
+        <div class="grid2"><button class="primary" id="polyAnalyze">Analyze</button><button id="polyEval">Evaluate</button></div>
+        <div id="polyOut" class="output muted"></div>
+      </div>
+
+      <div class="card form">
+        <h3>Eigenvalues — 2×2</h3>
+        <div class="form-row"><input id="e11" value="2"><input id="e12" value="1"></div>
+        <div class="form-row"><input id="e21" value="1"><input id="e22" value="2"></div>
+        <button class="primary" id="eigen">Calculate Eigenvalues</button>
+        <div id="eigenOut" class="output muted"></div>
+      </div>
+
+      <div class="card form">
+        <h3>3D Surface</h3>
+        <label for="surface">z = f(x, y)</label>
+        <input id="surface" value="sin(sqrt(x*x+y*y))" placeholder="z = f(x,y)">
+        <label for="range3d">Range</label>
+        <div class="form-row"><input id="range3d" value="6" type="number"><button class="primary" id="plot3d">Render 3D</button></div>
+        <canvas id="surfaceCanvas" role="img" aria-label="3D surface plot"></canvas>
+      </div>
+
+      <div class="card form">
+        <h3>Constants Library</h3>
+        <label for="constantSearch">Search</label>
+        <input id="constantSearch" placeholder="Search: speed, gravity, Planck…">
+        <div id="constants" class="output muted"></div>
+      </div>
+    </section>
+
+    <section id="lab" class="panel">
+      <div class="hero card"><h2>Computational Lab</h2><p>Numerical methods, vectors, probability and data tools — fully offline.</p></div>
+
+      <div class="card form">
+        <h3>Numerical Root Finder</h3>
+        <label for="rootFn">f(x)</label>
+        <input id="rootFn" value="x^3-2*x-5" placeholder="f(x)">
+        <div class="form-row"><input id="rootA" value="1" type="number"><input id="rootB" value="3" type="number"></div>
+        <button class="primary" id="findRoot">Find Root</button>
+        <div id="rootOut" class="output muted"></div>
+      </div>
+
+      <div class="card form">
+        <h3>Numerical Integration</h3>
+        <label for="intFn">f(x)</label>
+        <input id="intFn" value="sin(x)" placeholder="f(x)">
+        <div class="form-row"><input id="intA" value="0" type="number"><input id="intB" value="3.141592653589793" type="number"></div>
+        <label for="intN">Intervals</label>
+        <input id="intN" value="1000" type="number" placeholder="Intervals">
+        <button class="primary" id="integrateNum">Calculate ∫</button>
+        <div id="intOut" class="output muted"></div>
+      </div>
+
+      <div class="card form">
+        <h3>Vector Lab</h3>
+        <div class="form-row"><input id="v1" value="1,2,3"><input id="v2" value="4,5,6"></div>
+        <div class="grid2"><button id="dot">Dot Product</button><button id="cross">Cross Product</button><button id="vsum">A + B</button><button id="vnorm">|A| / |B|</button></div>
+        <div id="vectorOut" class="output muted"></div>
+      </div>
+
+      <div class="card form">
+        <h3>Probability &amp; Combinatorics</h3>
+        <div class="form-row"><input id="probN" type="number" value="10"><input id="probK" type="number" value="3"></div>
+        <div class="grid2"><button id="binom">Binomial P(X=k)</button><button id="atMost">P(X≤k)</button></div>
+        <input id="probP" type="number" step="0.01" value="0.5" placeholder="p">
+        <div id="probOut" class="output muted"></div>
+      </div>
+
+      <div class="card form">
+        <h3>Data Transformer</h3>
+        <textarea id="data2" placeholder="10, 20, 30, 40, 50"></textarea>
+        <div class="grid2"><button id="sortData">Sort</button><button id="zscore">Z-Scores</button><button id="normalize">Normalize 0–1</button><button id="five">Five-number Summary</button></div>
+        <div id="dataOut" class="output muted"></div>
+      </div>
+
+      <div class="card form">
+        <h3>Expression Inspector</h3>
+        <input id="inspect" placeholder="2*(x+3)^2 - sin(x)">
+        <button class="primary" id="inspectBtn">Inspect</button>
+        <div id="inspectOut" class="output muted"></div>
+      </div>
+
+      <div class="card form about-card">
+        <h3>About</h3>
+        <p class="about-line"><b>NovaCalc</b> — offline mathematics workstation</p>
+        <p class="about-line">Built by <b>moboapps</b> — Mohammad Azam</p>
+        <p class="about-line"><a href="mailto:m.azam7@gmail.com">m.azam7@gmail.com</a></p>
+      </div>
+    </section>
+
+    </main>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
