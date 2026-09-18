@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2f5ce8">
+<meta name="theme-color" content="#c9760a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NovaCalc">
 <meta name="description" content="NovaCalc — an offline professional mathematics workstation: calculator, CAS, graphing, matrices, statistics and numerical methods.">
 <meta name="author" content="Mohammad Azam — moboapps">
 <link rel="manifest" href="manifest.webmanifest">
@@ -62,6 +65,7 @@
     <header class="topbar">
       <div class="brand"><b>NovaCalc</b><small>Offline mathematics workstation · V6</small></div>
       <div class="topbar-actions">
+        <button id="installBtn" class="ghost tiny hidden">Install app</button>
         <span class="chip" id="angleChip">DEG</span>
       </div>
     </header>
@@ -380,6 +384,7 @@
         <p class="about-line"><b>NovaCalc</b> — offline mathematics workstation</p>
         <p class="about-line">Built by <b>moboapps</b> — Mohammad Azam</p>
         <p class="about-line"><a href="mailto:m.azam7@gmail.com">m.azam7@gmail.com</a></p>
+        <p class="about-line">iPhone/iPad: Share button → Add to Home Screen to install.</p>
       </div>
     </section>
 

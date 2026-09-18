@@ -325,3 +325,21 @@ $("#inspectBtn").onclick=()=>{
 /* ---------- Init ---------- */
 renderHistory();renderNotes();buildMatrix();renderConsts();plot();
 if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+
+/* ---------- Install (Add to Home Screen) ---------- */
+let deferredInstallPrompt=null;
+const installBtn=$("#installBtn");
+const alreadyStandalone=()=>window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+if(installBtn&&alreadyStandalone())installBtn.classList.add("hidden");
+window.addEventListener("beforeinstallprompt",e=>{
+  e.preventDefault();deferredInstallPrompt=e;
+  if(installBtn&&!alreadyStandalone())installBtn.classList.remove("hidden");
+});
+if(installBtn)installBtn.onclick=async()=>{
+  if(!deferredInstallPrompt)return;
+  deferredInstallPrompt.prompt();
+  const choice=await deferredInstallPrompt.userChoice;
+  if(choice.outcome==="accepted")toast("Installing NovaCalc…");
+  deferredInstallPrompt=null;installBtn.classList.add("hidden");
+};
+window.addEventListener("appinstalled",()=>{toast("NovaCalc installed");if(installBtn)installBtn.classList.add("hidden")});

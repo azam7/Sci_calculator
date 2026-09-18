@@ -214,6 +214,7 @@ body.dark .mode.active{color:var(--signal)}
 .primary:hover{filter:brightness(1.06)}
 .ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
 .ghost:hover{color:var(--ink);border-color:var(--muted)}
+.hidden{display:none!important}
 
 /* ---- Keypad: digits / operators / functions / utility, each legible at a glance ---- */
 .keypad{display:flex;flex-wrap:wrap;gap:.5rem}
